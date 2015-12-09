@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: :staticpages
+  root to: 'staticpages#index'
 
   namespace :api do
     resources :todos
