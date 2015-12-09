@@ -27,7 +27,6 @@ var TodoStore = {
   all: function () {
     return _todos.slice();
   },
-
   fetch: function () {
     var that = this;
     $.ajax({
@@ -54,8 +53,8 @@ var TodoStore = {
   },
   destroy: function(id){
     var that = this;
-    var idx = TodoStore.find(id);
-    var todo = _todos[idx];
+    var todo = TodoStore.find(id);
+    var idx = _todos.indexOf(todo);
     if (todo) {
       $.ajax({
         method: 'DELETE',

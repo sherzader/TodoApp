@@ -19708,7 +19708,6 @@
 	  all: function () {
 	    return _todos.slice();
 	  },
-	
 	  fetch: function () {
 	    var that = this;
 	    $.ajax({
@@ -19735,8 +19734,8 @@
 	  },
 	  destroy: function (id) {
 	    var that = this;
-	    var idx = TodoStore.find(id);
-	    var todo = _todos[idx];
+	    var todo = TodoStore.find(id);
+	    var idx = _todos.indexOf(todo);
 	    if (todo) {
 	      $.ajax({
 	        method: 'DELETE',
@@ -19767,20 +19766,28 @@
 /* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
+	var React = __webpack_require__(1),
+	    TodoStore = __webpack_require__(160),
+	    DeleteListItem = __webpack_require__(163);
 	
 	var TodoListItem = React.createClass({
 	  displayName: 'TodoListItem',
 	
 	  render: function () {
+	    var that = this;
 	    return React.createElement(
 	      'div',
 	      null,
 	      this.props.todos.map(function (l) {
 	        return React.createElement(
-	          'li',
-	          { key: l.id },
-	          l.title
+	          'div',
+	          null,
+	          React.createElement(
+	            'li',
+	            { key: l.id },
+	            l.title
+	          ),
+	          React.createElement(DeleteListItem, { todo: l })
 	        );
 	      })
 	    );
@@ -19848,6 +19855,31 @@
 	});
 	
 	module.exports = TodoForm;
+
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    TodoStore = __webpack_require__(160);
+	
+	var DeleteListItem = React.createClass({
+	  displayName: 'DeleteListItem',
+	
+	  handleDestroy: function (e) {
+	    TodoStore.destroy(this.props.todo.id);
+	  },
+	  render: function () {
+	    return React.createElement(
+	      'button',
+	      { key: this.props.todo.id + 1,
+	        onClick: this.handleDestroy },
+	      'Delete'
+	    );
+	  }
+	});
+	
+	module.exports = DeleteListItem;
 
 /***/ }
 /******/ ]);
